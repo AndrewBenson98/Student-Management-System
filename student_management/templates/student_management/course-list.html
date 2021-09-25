@@ -1,0 +1,61 @@
+{% extends 'student_management/base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <h1>Courses</h1>
+
+    {% if user.is_authenticated %}
+    <a class="btn btn-info" href="{% url 'course-create' %}">Create New Course</a>
+    {% endif %}
+    <div class="mt-4">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Course Code</th>
+                    <th>Course name</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for course in courses %}
+                <tr>
+                    <td>{{ course.courseCode }}</td>
+                    <td>{{ course.courseName }}</td>
+                    <td><a class="btn btn-info" href="{% url 'course-detail' course.pk %}">More Info</a></td>
+                </tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <!-- Pagination -->
+    {% if is_paginated %}
+
+    <div class="text-center">
+        {% if page_obj.has_previous %}
+        <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+        <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <a class="btn btn-outline-info mb-4"
+            href="?page={{ num }}">{{ num }}</a>
+
+            {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+            {% endif %}
+
+
+    </div>
+    {% endif %}
+    <!-- End Pagination -->
+</div>
+
+{% endblock %}

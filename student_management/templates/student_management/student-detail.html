@@ -1,0 +1,63 @@
+{% extends 'student_management/base.html' %}
+
+{% block content %}
+
+<div class="container">
+
+    <div>
+
+        <h1>{{ student.name }} ({{ student.studentID }})</h1>
+        <h4>Email: {{ student.email }}</h4>
+        <h4>Phone: {{ student.phoneNumber }}</h4>
+        <h4>GPA: {{ student.gpa }}</h4>
+    </div>
+    <div>
+        {% if user.is_authenticated %}
+        <a class="btn btn-info" href="{% url 'student-update' student.pk %}">Update</a>
+        <a class="btn btn-danger" href="{% url 'student-delete' student.pk %}">Delete</a>
+        {% endif %}
+    </div>
+
+    <div class="mt-4">
+        <h2>Courses</h2>
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Course Code</th>
+                        <th>Course Name</th>
+                        <th>Grade</th>
+                        <th>View Course</th>
+                        {% if user.is_authenticated %}
+                        <th>Update Grade</th>
+                        <th>Unenroll</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for enrolled_course in enrolled_courses %}
+                    <tr>
+                        <td>{{ enrolled_course.course.courseCode }}</td>
+                        <td>{{ enrolled_course.course.courseName }}</td>
+                        <td>{{ enrolled_course.grade }}%</td>
+                        <td><a class="btn btn-info" href="{% url 'course-detail' enrolled_course.course.pk %}">View
+                                Course</a></td>
+
+                        {% if user.is_authenticated %}
+                        <td><a class="btn btn-info" href="{% url 'student-grade-update' enrolled_course.pk %}">Update
+                                Grade</a></td>
+                        <td><a class="btn btn-danger"
+                                href="{% url 'student-unenrollment' enrolled_course.pk %}">Unenroll
+                                Student</a></td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'student_management/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<h1>Change {{ enrolled_course.student.name }}'s {{ enrolled_course.course.courseName }} Grade</h1>
+<h3>Current Grade: {{ enrolled_course.grade }}%</h3>
+<form method="post">{% csrf_token %}
+    {{ form|crispy }}
+    <input class="btn btn-info" type="submit" value="Save">
+</form>
+
+{% endblock %}
