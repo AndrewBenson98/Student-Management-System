@@ -19,7 +19,7 @@ class StudentListView(ListView):
 class StudentCreateView(LoginRequiredMixin,CreateView):
     model = Student
     template_name = 'student_management/student-create.html'
-    fields = ['studentID', 'name', 'email', 'phoneNumber', 'gpa']
+    fields = ['studentID', 'name', 'email', 'phoneNumber']
     
     
 class StudentUpdateView(LoginRequiredMixin,UpdateView):
