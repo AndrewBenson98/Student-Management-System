@@ -9,7 +9,7 @@ class Student(models.Model):
     name = models.CharField(max_length=50)
     email = models.EmailField(max_length=254, blank=True)
     phoneNumber = models.CharField(max_length=15, blank=True)
-    gpa = models.DecimalField(max_digits=3, decimal_places=2, default=0)
+    gpa = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     
     
     #Calculates the student's average grade as a percentage e.g 75.55%
@@ -28,8 +28,9 @@ class Student(models.Model):
     #Sets their gpa based off their enrolled courses
     def setGpa(self):
         averageGrade = self.get_average()
-        gpa = 4 * (averageGrade/100)
-        self.gpa= gpa
+        #gpa = 4 * (averageGrade/100)
+        #self.gpa= gpa
+        self.gpa = averageGrade
         self.save()
         return 
     

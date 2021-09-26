@@ -14,6 +14,7 @@ class StudentListView(ListView):
     model = Student
     context_object_name = 'students'
     paginate_by =5
+    ordering = ['name']
     
     
 class StudentCreateView(LoginRequiredMixin,CreateView):
@@ -37,7 +38,7 @@ class StudentDetailView(DetailView):
     #Get Context: All the courses the student is enrolled in
     def get_context_data(self, **kwargs):
         student = get_object_or_404(Student, pk=self.kwargs.get('pk'))
-        enrolled_courses = EnrolledCourse.objects.filter(student=student)
+        enrolled_courses = EnrolledCourse.objects.filter(student=student).order_by('course')
         context = super().get_context_data(**kwargs)
         context['enrolled_courses'] = enrolled_courses
         return context
@@ -55,7 +56,8 @@ class CourseListView(ListView):
     model = Course
     template_name ='student_management/course-list.html'
     context_object_name ='courses'
-    paginate_by =5 
+    paginate_by =5
+    ordering = ['courseCode'] 
     
 
 class CourseDetailView(DetailView):
@@ -65,7 +67,7 @@ class CourseDetailView(DetailView):
     
     def get_context_data(self, **kwargs):
         course = get_object_or_404(Course, pk=self.kwargs.get('pk'))
-        enrolled_courses = EnrolledCourse.objects.filter(course=course)
+        enrolled_courses = EnrolledCourse.objects.filter(course=course).order_by('student')
         context = super().get_context_data(**kwargs)
         context['enrolled_courses'] = enrolled_courses
         return context
